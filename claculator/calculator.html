@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Static Gradient Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* 🌑 Static Black → Blue → Greenish Background */
+    body {
+      background: linear-gradient(
+        135deg,
+        #000000 0%,
+        #0f172a 30%,
+        #1e3a8a 55%,
+        #0f766e 75%,
+        #10b981 100%
+      );
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      color: #e5e7eb;
+    }
+
+    /* 💎 Calculator Container */
+    .calculator {
+      background: rgba(10, 15, 25, 0.75);
+      backdrop-filter: blur(18px);
+      border-radius: 26px;
+      width: 340px;
+      padding: 25px;
+      box-shadow: 0 20px 45px rgba(16, 185, 129, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* 🖥️ Display */
+    .display {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      border-radius: 14px;
+      text-align: right;
+      padding: 16px;
+      font-size: 2.2rem;
+      color: #e5e7eb;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.5);
+      overflow-x: auto;
+      text-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+    }
+
+    /* 🔘 Buttons Grid */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    /* 🎨 Button Base */
+    button {
+      font-size: 1.3rem;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #e5e7eb;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+    }
+
+    /* 🔢 Numbers */
+    button.number {
+      background: linear-gradient(145deg, #020617, #020617);
+    }
+
+    /* ➕ Operators (Blue) */
+    button.operator {
+      background: linear-gradient(145deg, #1e40af, #2563eb);
+    }
+
+    /* 🟢 Equal (Greenish) */
+    button.equal {
+      background: linear-gradient(145deg, #10b981, #059669);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.7);
+    }
+
+    /* 🔴 Clear */
+    button.clear {
+      background: linear-gradient(145deg, #dc2626, #991b1b);
+    }
+
+    /* 🟠 Delete */
+    button.delete {
+      background: linear-gradient(145deg, #f59e0b, #b45309);
+    }
+
+    /* ✨ Hover & Active */
+    button:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.6);
+    }
+
+    button.equal:hover {
+      box-shadow: 0 0 26px rgba(16, 185, 129, 0.9);
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+
+    <div class="buttons">
+      <button class="clear">C</button>
+      <button class="delete">⌫</button>
+      <button class="operator">%</button>
+      <button class="operator">/</button>
+
+      <button class="number">7</button>
+      <button class="number">8</button>
+      <button class="number">9</button>
+      <button class="operator">*</button>
+
+      <button class="number">4</button>
+      <button class="number">5</button>
+      <button class="number">6</button>
+      <button class="operator">-</button>
+
+      <button class="number">1</button>
+      <button class="number">2</button>
+      <button class="number">3</button>
+      <button class="operator">+</button>
+
+      <button class="number">0</button>
+      <button class="number">.</button>
+      <button class="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.querySelectorAll("button");
+    let input = "";
+
+    function updateDisplay() {
+      display.textContent = input || "0";
+    }
+
+    function calculate() {
+      try {
+        input = eval(input).toString();
+      } catch {
+        input = "Error";
+      }
+      updateDisplay();
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const value = btn.textContent;
+
+        if (btn.classList.contains("clear")) {
+          input = "";
+        } else if (btn.classList.contains("delete")) {
+          input = input.slice(0, -1);
+        } else if (btn.classList.contains("equal")) {
+          calculate();
+          return;
+        } else {
+          input += value;
+        }
+        updateDisplay();
+      });
+    });
+
+    document.addEventListener("keydown", e => {
+      if ((e.key >= "0" && e.key <= "9") || "+-*/.%".includes(e.key)) {
+        input += e.key;
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        calculate();
+        return;
+      } else if (e.key === "Backspace") {
+        input = input.slice(0, -1);
+      } else if (e.key.toLowerCase() === "c") {
+        input = "";
+      }
+      updateDisplay();
+    });
+  </script>
+</body>
+</html>
