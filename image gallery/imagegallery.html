@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Premium Image Gallery</title>
+
+  <!-- ✅ Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* 🌈 Animated background gradient */
+    body {
+      background: linear-gradient(270deg, #e0f7fa, #f3e5f5, #ffe0b2, #e1bee7);
+      background-size: 800% 800%;
+      animation: gradientMove 16s ease infinite;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 🌸 Floating title animation */
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* 🖼️ Gallery container */
+    .gallery-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* 💎 Image boxes with glow */
+    .gallery-box {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      overflow: hidden;
+      flex: 1 1 260px;
+      max-width: 320px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.5s ease, box-shadow 0.5s ease, border 0.3s ease;
+      border: 2px solid transparent;
+      position: relative;
+    }
+
+    .gallery-box:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      border: 2px solid rgba(147, 51, 234, 0.6);
+    }
+
+    /* 🖼️ Images inside */
+    .gallery-box img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 0.75rem;
+      transition: transform 0.4s ease;
+    }
+    .gallery-box:hover img {
+      transform: scale(1.08);
+    }
+
+    /* ✨ Decorative glow behind hover */
+    .gallery-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(147,51,234,0.3), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+    .gallery-box:hover::after {
+      opacity: 1;
+    }
+
+    /* 💡 Lightbox */
+    .lightbox {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      animation: fadeIn 0.4s ease;
+    }
+
+    #lightboxImg {
+      animation: zoomIn 0.4s ease;
+      border-radius: 1rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0.5; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Hidden state */
+    .hidden { display: none; }
+  </style>
+</head>
+
+<body class="flex flex-col items-center min-h-screen p-8">
+
+  <!-- 🌟 Title -->
+  <h1 class="text-5xl font-extrabold text-gray-800 mb-3 text-center floating drop-shadow-lg">
+       Responsive Image Gallery
+  </h1>
+  <p class="text-gray-700 mb-12 text-center max-w-3xl text-lg italic">
+    An elegant gallery with floating cards, soft glows, and immersive lightbox transitions.
+  </p>
+
+  <!-- ✅ Gallery -->
+  <div class="gallery-container">
+
+    <div class="gallery-box">
+      <img src="https://images.pexels.com/photos/29835382/pexels-photo-29835382/free-photo-of-lush-sunlit-forest-in-autumn-england.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=600" alt="">
+    </div>
+
+    <div class="gallery-box">
+      <img src="https://img.freepik.com/free-photo/los-angeles-downtown-buildings-night_649448-298.jpg?w=740&q=80" alt="">
+    </div>
+
+    <div class="gallery-box">
+      <img src="https://images.unsplash.com/photo-1618641662184-bafefb91a542?fm=jpg&q=60&w=1200" alt="">
+    </div>
+
+    <div class="gallery-box">
+      <img src="https://thumbs.dreamstime.com/b/idyllic-summer-landscape-clear-mountain-lake-alps-45054687.jpg" alt="">
+    </div>
+
+    <div class="gallery-box">
+      <img src="https://media.istockphoto.com/id/1164386039/photo/howrah-bridge-on-river-ganges-at-kolkata-at-twilight-with-moody-sky.jpg?s=612x612&w=0&k=20&c=CHrNWdInFSDyERdvgd0f8935hZcBQU6lbYCE4LlXqUY=" alt="">
+    </div>
+
+  </div>
+
+  <!-- 💡 Lightbox -->
+  <div id="lightbox" class="fixed inset-0 hidden items-center justify-center z-50 lightbox">
+    <button id="prevBtn" class="absolute left-5 text-white text-5xl font-bold hover:scale-125 transition">&#10094;</button>
+    <img id="lightboxImg" src="" class="max-w-[90%] max-h-[80vh] rounded-xl transition duration-500">
+    <button id="nextBtn" class="absolute right-5 text-white text-5xl font-bold hover:scale-125 transition">&#10095;</button>
+    <button id="closeBtn" class="absolute top-5 right-7 text-white text-5xl font-bold hover:scale-125 transition">&times;</button>
+  </div>
+
+  <!-- 🧠 Script -->
+  <script>
+    const galleryImages = document.querySelectorAll('.gallery-box img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    let currentIndex = 0;
+
+    function showLightbox(index) {
+      currentIndex = index;
+      lightboxImg.src = galleryImages[index].src;
+      lightbox.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showLightbox(currentIndex);
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showLightbox(currentIndex);
+    }
+
+    galleryImages.forEach((img, i) => {
+      img.addEventListener('click', () => showLightbox(i));
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  </script>
+
+</body>
+</html>
+
+
